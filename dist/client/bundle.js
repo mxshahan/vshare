@@ -62,7 +62,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "96ceb501936ed6a3cbd1"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c56508c4080793ffad14"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -50385,7 +50385,7 @@ class Contact extends _react2.default.Component {
           _react2.default.createElement(
             'div',
             { className: 'col-md-6' },
-            _react2.default.createElement('iframe', { src: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.173369726062!2d77.64617061427388!3d12.9607556186242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae14067cca9bdd%3A0x111bbe37cc24e71a!2sThe+Leela+Palace+Bengaluru!5e0!3m2!1sen!2sbd!4v1526334526951', width: '600', height: '450', frameborder: '0', style: 'border:0', allowfullscreen: true })
+            _react2.default.createElement('iframe', { src: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.173369726062!2d77.64617061427388!3d12.9607556186242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae14067cca9bdd%3A0x111bbe37cc24e71a!2sThe+Leela+Palace+Bengaluru!5e0!3m2!1sen!2sbd!4v1526334526951', width: '100%', height: '350', frameBorder: '0', allowFullScreen: true })
           )
         ),
         _react2.default.createElement(
