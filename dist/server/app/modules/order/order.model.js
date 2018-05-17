@@ -34,13 +34,21 @@ const OrderSchema = new _mongoose2.default.Schema({
     type: String,
     required: true
   },
-  file: [{
+  file: {
     type: String
-  }]
-  // owner: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'userModel'
-  // }
+  },
+  owner: {
+    type: _mongoose2.default.Schema.Types.ObjectId,
+    ref: 'userModel'
+  },
+  contentType: {
+    type: String,
+    default: 'Video'
+  },
+  status: {
+    type: String,
+    default: 'pending'
+  }
 });
 // import { genSaltSync, hashSync } from 'bcryptjs';
 

@@ -3,7 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UpdateViews = exports.ImageWithCat = exports.VideosWithCat = exports.contentAllVideos = exports.contentAllImages = exports.ContentDownLoad = exports.contentCategory = exports.filterContent = exports.userContent = exports.myContent = exports.contentDelete = exports.contentUpdate = exports.contentCreate = exports.contentSingle = exports.contentAll = undefined;
+exports.ContentDownLoadVideo = exports.ContentDownLoadImage = exports.UpdateViews = exports.ImageWithCat = exports.VideosWithCat = exports.contentAllVideos = exports.contentAllImages = exports.ContentDownLoad = exports.contentCategory = exports.filterContent = exports.userContent = exports.myContent = exports.contentDelete = exports.contentUpdate = exports.contentCreate = exports.contentSingle = exports.contentAll = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _content = require('./content.model');
 
@@ -44,24 +46,20 @@ const ContentDownLoad = (() => {
   var _ref2 = _asyncToGenerator(function* (ctx) {
     try {
       content = yield _content.contentCrud.single({
-        qr: { category: ctx.params.contentId }
+        qr: {
+          _id: ctx.params.id
+        }
       });
-      if (content.price === 0) {
-        user = yield _user.userCrud.single({
-          qr: {
-            id: ctx.state.user.uid
-          }
-        });
-        user.downloads.push(content);
-        yield user.save();
-      } else {
-        ctx.body = {
-          message: 'To Purchase this you have to subscribe :) '
-        };
-      }
+      user = yield _user.userCrud.single({
+        qr: {
+          _id: ctx.state.user.uid
+        }
+      });
+      user.downloads.push(content._id);
+      yield user.save();
     } catch (error) {
       ctx.throw = {
-        message: 'Sorry you don\'t have right to edit this'
+        message: 'Sorry you don\'t have right to download this'
       };
     }
   });
@@ -71,8 +69,56 @@ const ContentDownLoad = (() => {
   };
 })();
 
-const contentCategory = (() => {
+const ContentDownLoadImage = (() => {
   var _ref3 = _asyncToGenerator(function* (ctx) {
+    try {
+      user = yield _user.userCrud.single({
+        qr: {
+          _id: ctx.state.user.uid
+        },
+        populate: {
+          path: 'downloads',
+          populate: {
+            path: 'file',
+            model: 'filesModel'
+          }
+        }
+      });
+    } catch (e) {
+      ctx.throw(404, e.message);
+    } finally {
+      ctx.body = user.downloads;
+    }
+  });
+
+  return function ContentDownLoadImage(_x3) {
+    return _ref3.apply(this, arguments);
+  };
+})();
+
+const ContentDownLoadVideo = (() => {
+  var _ref4 = _asyncToGenerator(function* (ctx) {
+    try {
+      user = yield _user.userCrud.single({
+        qr: {
+          _id: ctx.state.user.uid
+        },
+        populate: 'downloads'
+      });
+    } catch (e) {
+      ctx.throw(404, e.message);
+    } finally {
+      ctx.body = user.downloads;
+    }
+  });
+
+  return function ContentDownLoadVideo(_x4) {
+    return _ref4.apply(this, arguments);
+  };
+})();
+
+const contentCategory = (() => {
+  var _ref5 = _asyncToGenerator(function* (ctx) {
     try {
       content = yield _content.contentCrud.get({
         select: 'category -_id',
@@ -86,13 +132,13 @@ const contentCategory = (() => {
     }
   });
 
-  return function contentCategory(_x3) {
-    return _ref3.apply(this, arguments);
+  return function contentCategory(_x5) {
+    return _ref5.apply(this, arguments);
   };
 })();
 
 const contentAll = (() => {
-  var _ref4 = _asyncToGenerator(function* (ctx) {
+  var _ref6 = _asyncToGenerator(function* (ctx) {
     try {
       content = yield _content.contentCrud.get({
         populate: 'file category',
@@ -105,13 +151,13 @@ const contentAll = (() => {
     }
   });
 
-  return function contentAll(_x4) {
-    return _ref4.apply(this, arguments);
+  return function contentAll(_x6) {
+    return _ref6.apply(this, arguments);
   };
 })();
 
 const contentAllImages = (() => {
-  var _ref5 = _asyncToGenerator(function* (ctx) {
+  var _ref7 = _asyncToGenerator(function* (ctx) {
     try {
       content = yield _content.contentCrud.get({
         qr: {
@@ -127,13 +173,13 @@ const contentAllImages = (() => {
     }
   });
 
-  return function contentAllImages(_x5) {
-    return _ref5.apply(this, arguments);
+  return function contentAllImages(_x7) {
+    return _ref7.apply(this, arguments);
   };
 })();
 
 const contentAllVideos = (() => {
-  var _ref6 = _asyncToGenerator(function* (ctx) {
+  var _ref8 = _asyncToGenerator(function* (ctx) {
     try {
       content = yield _content.contentCrud.get({
         qr: { contentType: 'Video' },
@@ -147,13 +193,13 @@ const contentAllVideos = (() => {
     }
   });
 
-  return function contentAllVideos(_x6) {
-    return _ref6.apply(this, arguments);
+  return function contentAllVideos(_x8) {
+    return _ref8.apply(this, arguments);
   };
 })();
 
 const VideosWithCat = (() => {
-  var _ref7 = _asyncToGenerator(function* (ctx) {
+  var _ref9 = _asyncToGenerator(function* (ctx) {
     try {
       content = yield _content.contentCrud.get({
         qr: {
@@ -170,12 +216,12 @@ const VideosWithCat = (() => {
     }
   });
 
-  return function VideosWithCat(_x7) {
-    return _ref7.apply(this, arguments);
+  return function VideosWithCat(_x9) {
+    return _ref9.apply(this, arguments);
   };
 })();
 const ImageWithCat = (() => {
-  var _ref8 = _asyncToGenerator(function* (ctx) {
+  var _ref10 = _asyncToGenerator(function* (ctx) {
     try {
       content = yield _content.contentCrud.get({
         qr: {
@@ -192,13 +238,13 @@ const ImageWithCat = (() => {
     }
   });
 
-  return function ImageWithCat(_x8) {
-    return _ref8.apply(this, arguments);
+  return function ImageWithCat(_x10) {
+    return _ref10.apply(this, arguments);
   };
 })();
 
 const myContent = (() => {
-  var _ref9 = _asyncToGenerator(function* (ctx) {
+  var _ref11 = _asyncToGenerator(function* (ctx) {
     try {
       content = yield _user.userCrud.single({
         qr: { _id: ctx.state.user.uid },
@@ -212,13 +258,13 @@ const myContent = (() => {
     }
   });
 
-  return function myContent(_x9) {
-    return _ref9.apply(this, arguments);
+  return function myContent(_x11) {
+    return _ref11.apply(this, arguments);
   };
 })();
 
 const userContent = (() => {
-  var _ref10 = _asyncToGenerator(function* (ctx) {
+  var _ref12 = _asyncToGenerator(function* (ctx) {
     try {
       content = yield _user.userCrud.single({
         qr: { username: ctx.params.user },
@@ -232,13 +278,13 @@ const userContent = (() => {
     }
   });
 
-  return function userContent(_x10) {
-    return _ref10.apply(this, arguments);
+  return function userContent(_x12) {
+    return _ref12.apply(this, arguments);
   };
 })();
 
 const contentSingle = (() => {
-  var _ref11 = _asyncToGenerator(function* (ctx) {
+  var _ref13 = _asyncToGenerator(function* (ctx) {
     try {
       content = yield _content.contentCrud.single({
         qr: { _id: ctx.params.id },
@@ -251,14 +297,14 @@ const contentSingle = (() => {
     }
   });
 
-  return function contentSingle(_x11) {
-    return _ref11.apply(this, arguments);
+  return function contentSingle(_x13) {
+    return _ref13.apply(this, arguments);
   };
 })();
 
 const contentCreate = (() => {
-  var _ref12 = _asyncToGenerator(function* (ctx) {
-    const contentData = Object.assign({
+  var _ref14 = _asyncToGenerator(function* (ctx) {
+    const contentData = _extends({
       author: ctx.state.user.uid
     }, ctx.request.body);
     try {
@@ -274,13 +320,13 @@ const contentCreate = (() => {
     }
   });
 
-  return function contentCreate(_x12) {
-    return _ref12.apply(this, arguments);
+  return function contentCreate(_x14) {
+    return _ref14.apply(this, arguments);
   };
 })();
 
 const UpdateViews = (() => {
-  var _ref13 = _asyncToGenerator(function* (ctx) {
+  var _ref15 = _asyncToGenerator(function* (ctx) {
     try {
       content = yield _content.contentCrud.put({
         params: {
@@ -299,13 +345,13 @@ const UpdateViews = (() => {
     }
   });
 
-  return function UpdateViews(_x13) {
-    return _ref13.apply(this, arguments);
+  return function UpdateViews(_x15) {
+    return _ref15.apply(this, arguments);
   };
 })();
 
 const contentUpdate = (() => {
-  var _ref14 = _asyncToGenerator(function* (ctx) {
+  var _ref16 = _asyncToGenerator(function* (ctx) {
     try {
       user = yield _user.userCrud.single({
         qr: { _id: ctx.state.user.uid },
@@ -336,13 +382,13 @@ const contentUpdate = (() => {
     }
   });
 
-  return function contentUpdate(_x14) {
-    return _ref14.apply(this, arguments);
+  return function contentUpdate(_x16) {
+    return _ref16.apply(this, arguments);
   };
 })();
 
 const contentDelete = (() => {
-  var _ref15 = _asyncToGenerator(function* (ctx) {
+  var _ref17 = _asyncToGenerator(function* (ctx) {
     try {
       user = yield _user.userCrud.single({
         qr: { _id: ctx.state.user.uid }
@@ -374,8 +420,8 @@ const contentDelete = (() => {
     }
   });
 
-  return function contentDelete(_x15) {
-    return _ref15.apply(this, arguments);
+  return function contentDelete(_x17) {
+    return _ref17.apply(this, arguments);
   };
 })();
 
@@ -394,3 +440,5 @@ exports.contentAllVideos = contentAllVideos;
 exports.VideosWithCat = VideosWithCat;
 exports.ImageWithCat = ImageWithCat;
 exports.UpdateViews = UpdateViews;
+exports.ContentDownLoadImage = ContentDownLoadImage;
+exports.ContentDownLoadVideo = ContentDownLoadVideo;

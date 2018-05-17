@@ -13,12 +13,16 @@ const baseUrl = exports.baseUrl = '/api/order';
 
 const routes = exports.routes = [{
   method: 'GET',
-  route: '/order/all',
+  route: '/all',
   handlers: [_middlewares.isAuthenticated, _controller.OrderAll]
 }, {
-  method: 'POST',
-  route: '/contact',
-  handlers: [_controller.ContactUs]
+  method: 'GET',
+  route: '/image',
+  handlers: [_middlewares.isAuthenticated, _controller.OrderImage]
+}, {
+  method: 'GET',
+  route: '/video',
+  handlers: [_middlewares.isAuthenticated, _controller.OrderVideo]
 }, {
   method: 'GET',
   route: '/:id',
@@ -34,5 +38,9 @@ const routes = exports.routes = [{
 }, {
   method: 'POST',
   route: '/create',
-  handlers: [_controller.OrderCreate]
+  handlers: [_middlewares.isAuthenticated, _controller.OrderCreate]
+}, {
+  method: 'POST',
+  route: '/contact',
+  handlers: [_controller.ContactUs]
 }];

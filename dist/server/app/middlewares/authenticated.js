@@ -23,7 +23,7 @@ const isAuthenticated = (() => {
       if (!decode) {
         ctx.throw(401, { message: 'Token has expired' });
       }
-      ctx.state.user = decode;
+      if (decode) ctx.state.user = decode;
       yield next();
     }
   });

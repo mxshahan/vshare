@@ -17,7 +17,15 @@ const routes = exports.routes = [{
   handlers: [_controller.contentCategory]
 }, {
   method: 'GET',
-  route: '/download/:contentId',
+  route: '/download/image',
+  handlers: [_middlewares.isAuthenticated, _controller.ContentDownLoadImage]
+}, {
+  method: 'GET',
+  route: '/download/video',
+  handlers: [_middlewares.isAuthenticated, _controller.ContentDownLoadVideo]
+}, {
+  method: 'GET',
+  route: '/download/:id',
   handlers: [_middlewares.isAuthenticated, _controller.ContentDownLoad]
 }, {
   method: 'GET',
