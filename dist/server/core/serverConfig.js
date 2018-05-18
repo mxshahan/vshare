@@ -40,11 +40,17 @@ var _koaHistoryApiFallback = require('koa-history-api-fallback');
 
 var _koaHistoryApiFallback2 = _interopRequireDefault(_koaHistoryApiFallback);
 
+var _dotenv = require('dotenv');
+
+var _dotenv2 = _interopRequireDefault(_dotenv);
+
 var _app = require('../app');
 
 var _errorConfig = require('./errorConfig');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_dotenv2.default.config();
 
 function baseConfig(app) {
   app.keys = _config2.default.get('secret');
